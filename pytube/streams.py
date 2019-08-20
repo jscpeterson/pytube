@@ -13,6 +13,7 @@ import io
 import logging
 import os
 import pprint
+from datetime import datetime
 
 from pytube import extract
 from pytube import request
@@ -173,7 +174,13 @@ class Stream(object):
         :returns:
             An os file system compatible filename.
         """
-        title = self.player_config_args['title']
+        try:
+             title = self.player_config_args['title']
+        except:
+             title = self.player_config_args.get('player_response', {}).get('title')
+        finally:
+             if not title:
+                  title = 'Unknown YT Vid {}'.format(datetime.now().strftime('%c'))    
         filename = safe_filename(title)
         return '{filename}.{s.subtype}'.format(filename=filename, s=self)
 

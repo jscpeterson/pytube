@@ -11,6 +11,7 @@ from __future__ import absolute_import
 
 import json
 import logging
+from datetime import datetime
 
 from pytube import Caption
 from pytube import CaptionQuery
@@ -251,6 +252,16 @@ class YouTube(object):
         :rtype: str
 
         """
+        
+        try:
+             tt1 = self.player_config_args['title']
+        except:
+             tt1 = self.player_config_args.get('player_response', {}).get('videoDetails', {}).get('title')
+        finally:
+             if not tt1:
+                  tt1 = 'Unknown YT Vid {}'.format(datetime.now().strftime('%c'))
+        return tt1
+
         return self.player_config_args['title']
 
     @property
